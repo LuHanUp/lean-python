@@ -26,3 +26,9 @@ print("第二大的值为:", li[len(li) - 2])
 # 判断一个列表是否是另一个列表的子列表
 li = [5, 4, 1, 5, 45, 23, 4, 68, 4, 6, 4, 6, 2, 1, 3, 1, 5, 58, 1, 2, 15, 124, 62, 51, 1, 5, 45, 5, 4, 54, 1, 5, 1]
 l2 = [4, 68, 4]
+
+is_sub_list = True
+for i in l2:
+    if i not in li:
+        is_sub_list = False
+print("l2是li的子列表吗？", is_sub_list)
