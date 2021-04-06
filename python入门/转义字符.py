@@ -5,5 +5,5 @@ print("hello\rworld")  # world会将hello进行覆盖，\r表示光标回车 就
 print("hello\bworld")  # \b是退一个字符，会导致o会被w覆盖
 print("老师说：\"大家好\"")
 
-# 原字符，不希望字符串汇总的转义字符起作用，就使用原字符，就是在字符串之前加上r/R
+# 原字符，不希望字符串中的转义字符起作用，就使用原字符，就是在字符串之前加上r/R
 print(r"hello\tworld")
