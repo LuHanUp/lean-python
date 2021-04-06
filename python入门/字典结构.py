@@ -45,3 +45,9 @@ print("字段的获取相关操作".center(50, "-"))
 print(sources.items())  # 返回字典内的所有元素以'元组'的方式进行返回
 print(sources.values())  # 返回字典内所有的value
 print(sources.keys())  # 返回字典内的所有的key
+
+# 字典的生成式：格式为：{key表达式:value表达式 for key变量名称,value变量名称 in zip(key数组,value数组)}
+keys = ["name", "age", "address"]
+values = ["李四", 34, "上海市松江区"]
+sources = {key.upper(): value for key, value in zip(keys, values)}
+print(sources)
