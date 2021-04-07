@@ -1,4 +1,4 @@
-# 字典数据结构对应的就是Java中的Map
+# 字典数据结构对应的就是Java中的Map 字典是可变的，key不可重复value可重复，无序的序列
 dist_obj = {"key": "value"}
 print(dist_obj)
 
