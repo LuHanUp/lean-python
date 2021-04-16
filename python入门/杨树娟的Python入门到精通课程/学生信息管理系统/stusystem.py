@@ -1,3 +1,5 @@
+import os
+
 menuStr = '''
 ========================学生信息管理系统===========================
 ----------------------------功能菜单-----------------------------
@@ -31,13 +33,14 @@ def insert():
         id_exists = False
 
         # 判断学生编号有没有重复
-        with open(file_name, mode="r", encoding="utf-8") as file:
-            stu_old_list = file.readlines()
-            for stu_old_info in stu_old_list:
-                stu_old_info = dict(eval(str(stu_old_info)))
-                if stu_old_info["id"] == stu_id:
-                    id_exists = True
-                    break
+        if os.path.exists(file_name):  # 当文件存在时,再去校验
+            with open(file_name, mode="r", encoding="utf-8") as file:
+                stu_old_list = file.readlines()
+                for stu_old_info in stu_old_list:
+                    stu_old_info = dict(eval(str(stu_old_info)))
+                    if stu_old_info["id"] == stu_id:
+                        id_exists = True
+                        break
         if id_exists:
             print(f"学生编号{stu_id}已经存在了,请重新输入学生编号")
             continue
