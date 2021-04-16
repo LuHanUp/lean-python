@@ -120,15 +120,20 @@ def delete():
         show_stu_list(stu_old_list)  # 显示学生信息
         is_deleted = False
         delete_stu_id = input("请输入要删除的学生编号:")
+        un_delete_list = []
         for stu_info in stu_old_list:
             if stu_info["id"] == delete_stu_id:
                 is_deleted = True
             else:
-                with open(file_name, "w", encoding="utf-8") as file:
-                    file.write(str(stu_info) + "\n")
+                un_delete_list.append(stu_info)
+        with open(file_name, "w", encoding="utf-8") as file:
+            for stu_info in un_delete_list:
+                file.write(str(stu_info) + "\n")
         if is_deleted:
             print(f"学生编号{delete_stu_id}信息已被删除")
-            show_stu_list(stu_old_list)  # 显示学生信息
+            show()  # 显示学生信息
+        else:
+            print("没有找到编号{0}的学生".format(delete_stu_id))
         answer = input("是否继续删除?y/n:")
         if answer == "y":
             delete()  # 进行递归删除
