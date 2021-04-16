@@ -17,16 +17,31 @@ file_name = "students.txt"
 
 # 新增学生信息
 def save(lst):
-    with open(file_name, "a", encoding="utf-8"):
-        with open(file_name, "w", encoding="utf-8") as file:
-            for stu_info in lst:
-                file.write(str(stu_info) + '\n')
+    with open(file_name, "a", encoding="utf-8") as file:
+        for stu_info in lst:
+            file.write(str(stu_info) + '\n')
 
 
+# 添加学生信息的操作
 def insert():
     student_list = []
     while True:
         stu_id = input("请输入学生编号:")
+
+        id_exists = False
+
+        # 判断学生编号有没有重复
+        with open(file_name, mode="r", encoding="utf-8") as file:
+            stu_old_list = file.readlines()
+            for stu_old_info in stu_old_list:
+                stu_old_info = dict(eval(str(stu_old_info)))
+                if stu_old_info["id"] == stu_id:
+                    id_exists = True
+                    break
+        if id_exists:
+            print(f"学生编号{stu_id}已经存在了,请重新输入学生编号")
+            continue
+
         stu_name = input("请输入学生姓名:")
         english_grade = python_grade = java_grade = 0
 
