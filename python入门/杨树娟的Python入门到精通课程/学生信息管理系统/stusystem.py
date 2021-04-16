@@ -143,22 +143,117 @@ def delete():
 
 # 查询学生信息
 def search():
-    pass
+    stu_list = read_stu_list(file_name)
+    if len(stu_list) <= 0:
+        print("暂无学生信息,请先进行添加!!!")
+        return
+    while True:
+        is_find = False
+        search_stu_id = input("请输入要查找的学生编号:")
+        for stu_info in stu_list:
+            if stu_info.get("id") == search_stu_id:
+                is_find = True
+                print("找到了编号{0}的学生".format(search_stu_id))
+                show_stu_list([stu_info])
+        if not is_find:
+            print("没有找到编号{0}的学生".format(search_stu_id))
+        answer = input("是否还要继续查找?y/n:")
+        if answer == "y":
+            continue
+        else:
+            break
 
 
 # 修改学生信息
 def update():
-    pass
+    stu_list = read_stu_list(file_name)
+    show_stu_list(stu_list)
+    if len(stu_list) <= 0:
+        print("暂无学生信息,无法修改,请先进行添加")
+    else:
+        if_find = False
+        update_stu_id = input("请输入要修改的学生编号:")
+        with open(file_name, "w", encoding="utf-8") as file:
+            for stu_info in stu_list:
+                if stu_info.get("id") == update_stu_id:
+                    if_find = True
+                    print("找到了编码{0}的学生,请修改其信息".format(update_stu_id))
+                    english_grade = python_grade = java_grade = 0
+
+                    # 处理英语成绩
+                    while True:
+                        try:
+                            english_grade = int(input("请输入英语成绩:"))
+                            break
+                        except:
+                            print("成绩输入错误,请重新输入...ps:请输入数字")
+                            continue
+                    # 处理python成绩
+                    while True:
+                        try:
+                            python_grade = int(input("请输入Python成绩:"))
+                            break
+                        except:
+                            print("成绩输入错误,请重新输入...ps:请输入数字")
+                            continue
+                    # 处理Java成绩
+                    while True:
+                        try:
+                            java_grade = int(input("请输入Java成绩:"))
+                            break
+                        except:
+                            print("成绩输入错误,请重新输入...ps:请输入数字")
+                            continue
+                    stu_info["english_grade"] = english_grade
+                    stu_info["python_grade"] = python_grade
+                    stu_info["java_grade"] = java_grade
+                file.write(str(stu_info) + "\n")
+        if not if_find:
+            print("没有找到要修改的学生{0}".format(update_stu_id))
+        answer = input("是否继续修改?y/n:")
+        if answer == "y":
+            update()
 
 
 # 对学生信息进行排序
 def sort():
-    pass
+    stu_list = read_stu_list(file_name)
+    while True:
+        is_desc = input("请选择排序规则:0.升序 1.降序:")
+        if is_desc == "0":
+            is_desc = False
+            break
+        elif is_desc == "1":
+            is_desc = True
+            break
+        else:
+            print("您输入的不正确,请重新输入")
+            continue
+    while True:
+        sort_field = input("请输入排序方式: 1.按照英语成绩排序 2.按照Python成绩排序 3.按照Java成绩排序 0.按照总成绩排序:")
+        if sort_field == "1":
+            stu_list.sort(key=lambda item: int(item["english_grade"]), reverse=is_desc)
+        elif sort_field == "2":
+            stu_list.sort(key=lambda item: int(item["python_grade"]), reverse=is_desc)
+        elif sort_field == "3":
+            stu_list.sort(key=lambda item: int(item["java_grade"]), reverse=is_desc)
+        elif sort_field == "0":
+            stu_list.sort(
+                key=lambda item: int(item["english_grade"]) + int(item["python_grade"]) + int(item["java_grade"]),
+                reverse=is_desc)
+        else:
+            print("您输入的不合法,请重新输入")
+            continue
+        show_stu_list(stu_list)
+        break
+    answer = input("是否继续进行排序?y/n:")
+    if answer == "y":
+        sort()
 
 
 # 返回学生个数
 def count():
-    pass
+    print("学生总个数:{0}".format(len(read_stu_list(file_name))))
 
 
 # 显示所有学生信息
