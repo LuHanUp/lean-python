@@ -85,9 +85,55 @@ def insert():
     pass
 
 
+# 读取学生信息到list中
+def read_stu_list(file_patch=file_name):
+    stu_list_result = []
+    if os.path.exists(file_patch):
+        with open(file_patch, 'r', encoding="utf-8") as file:
+            stu_list = file.readlines()
+            for item in stu_list:
+                stu_list_result.append(dict(eval(item)))
+    return stu_list_result
+
+
+# 显示学生信息
+def show_stu_list(stu_old_list):
+    format_title = "{:^6}\t{:^12}\t{:^8}\t{:^10}\t{:^10}\t{:^8}"
+    print(format_title.format("编号", "姓名", "英语成绩", "Python成绩", "Java成绩", "总成绩"))
+    format_content = "{:^6}\t{:^12}\t{:^8}\t{:^10}\t{:^12}\t{:^10}"
+    for item in stu_old_list:
+        print(format_content.format(item.get("id"),
+                                    item.get("stu_name"),
+                                    item.get("english_grade"),
+                                    item.get("python_grade"),
+                                    item.get("java_grade"),
+                                    int(item.get("english_grade")) + int(item.get("python_grade")) + int(
+                                        item.get("java_grade"))))
+    if len(stu_old_list) <= 0:
+        print("暂无学生信息".center(60, "-"))
+
+
 # 删除学生信息
 def delete():
-    pass
+    if os.path.exists(file_name):
+        stu_old_list = read_stu_list(file_name)  # 从文件中读取学生信息列表
+        show_stu_list(stu_old_list)  # 显示学生信息
+        is_deleted = False
+        delete_stu_id = input("请输入要删除的学生编号:")
+        for stu_info in stu_old_list:
+            if stu_info["id"] == delete_stu_id:
+                is_deleted = True
+            else:
+                with open(file_name, "w", encoding="utf-8") as file:
+                    file.write(str(stu_info) + "\n")
+        if is_deleted:
+            print(f"学生编号{delete_stu_id}信息已被删除")
+            show_stu_list(stu_old_list)  # 显示学生信息
+        answer = input("是否继续删除?y/n:")
+        if answer == "y":
+            delete()  # 进行递归删除
+    else:
+        print("暂无学生信息!!!")
 
 
 # 查询学生信息
@@ -112,7 +158,7 @@ def count():
 
 # 显示所有学生信息
 def show():
-    pass
+    show_stu_list(read_stu_list(file_name))
 
 
 def main():
@@ -154,3 +200,12 @@ def menu():
 
 if __name__ == '__main__':
     main()
+
+'''
+项目打包成可执行文件
+1. 安装第三方模块PyInstaller
+    window:pip install PyInstaller
+    mac:pip3 install PyInstaller
+2. 执行打包操作
+    pyinstaller -F py文件路径
+'''
